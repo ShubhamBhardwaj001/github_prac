@@ -16,5 +16,28 @@ jobs:
          run: npm ci
       -  name: run simple
          run: npm test
-           
+
+         # a workflow can have multiple jobs.
+    
+  deploy:
+    runs-on: ubuntu-latest
+     steps:
+      -  name: simplejob
+         uses: actions/checkout@v3
+         # this action actions/checkout brings your repo code here in this workflow by default it will use the repo in which we are making the workflow but it can be changed also by using with:.
+      -  name: Install NodeJS
+         uses: actions/setup-node@v3
+         with:
+           node-version: 18
+         # but ubuntu- latest runner node is already downloaded therefore no need for this action.
+      -  name: install dependencies
+         run: npm ci
+
+         # before deploying it should always be build.
+      -  name: Build project
+         run: npm run build
+      -  name: deploy
+         run: echo "Deploying"
+      # these both jobs will run parallely
+    
          
