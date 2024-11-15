@@ -1,0 +1,20 @@
+name: simple project
+on: push
+jobs:
+  simple:
+    runs-on: ubuntu-latest
+    steps:
+      -  name: simplejob
+         uses: actions/checkout@v3
+         # this action actions/checkout brings your repo code here in this workflow by default it will use the repo in which we are making the workflow but it can be changed also by using with:.
+      -  name: Install NodeJS
+         uses: actions/setup-node@v3
+         with:
+           node-version: 18
+         # but ubuntu- latest runner node is already downloaded therefore no need for this action.
+      -  name: install dependencies
+         run: npm ci
+      -  name: run simple
+         run: npm test
+           
+         
