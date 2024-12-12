@@ -1,1 +1,9 @@
-
+name: output_info
+on: workflow_dispatch
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: output github context
+        run : echo "${{ toJSON(github)}}"
+# ${{}} ---> this makes that we are trying to get some data this is not a simple line to print
