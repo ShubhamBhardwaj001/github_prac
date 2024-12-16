@@ -1,1 +1,19 @@
-
+name: Events demo1
+on: 
+  pull_request:
+    types:
+     - opened
+  push:
+    branches:
+      - main    
+      - 'dev-*'
+      # this is the branch filter which we used this mean this workflow will only trigger when pe push the code to main or "dev-*" this branches only.
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print greeting
+        run: echo "Hello world!!"
+      - name: print goodbye
+        run: echo "done"
+        
