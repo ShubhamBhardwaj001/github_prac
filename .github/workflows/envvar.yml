@@ -1,1 +1,29 @@
+name: Events demo1
+on: 
+  pull_request:
+    types:
+     - opened
+  push:
+    branches:
+      - main    
+      - 'dev-*'
+env:
+   MONGO: firstvar   # we can define a env var at workflow level which can be used by all the jobs in a workflow level.
+jobs:
+  deploy:
+    env:
+      Mongojob pass: hello  # it will be accesseble in this job only
+      Mongo username: hello2
+      port: 8082
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code 
+        run: actions/checkout@v3 
+      - name: print output
+        run: |
+             echo "Mongo_username: ${{env.Mongo username}}"  # both will give the same output
+             echo "Mongo_username: $Mongo username
+      - name: run server
+        run: npm start https://127.0.0.0:$port   # getting the env var value
 
+        # these credentials should not be here it can be accessed by anyone therefore use secret go to secret in repo and save them there
