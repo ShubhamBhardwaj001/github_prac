@@ -36,3 +36,12 @@ jobs:
 # environment secret are used for making diff env like prod load or etc and appling rules on that like env protection rules 
 # for diff env we can save secret in the env secret related to it like for load we can save secret related to load inside it
 # for same key diff env may have diffrent value. so first create environment in Environments to store secret
+# in env we can set rule for reviwersso that workflow needs approval also branch rule that when this workflow is commited on a specific branch that only it will run and we can also set wait time rule
+# to use those env and sec use the environment key
+
+
+jobs:
+  hello:
+    environment: load
+    env:
+      mongo user: ${{secrets.mongo_user}}  # now these values will be fetched from env secret of load
