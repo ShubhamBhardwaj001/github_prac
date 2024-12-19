@@ -27,3 +27,12 @@ jobs:
         run: npm start https://127.0.0.0:$port   # getting the env var value
 
         # these credentials should not be here it can be accessed by anyone therefore use secret go to secret in repo and save them there
+# once they are saved in secret now they will be assigened or fetch like this
+      env:
+        mongopass: ${{secrets.mongo_pass}}
+        mongouser: ${{secrets.mongo_user}}
+
+# in secret we have 2 secret environment secret and repository secret for above we saved secret in repo secret
+# environment secret are used for making diff env like prod load or etc and appling rules on that like env protection rules 
+# for diff env we can save secret in the env secret related to it like for load we can save secret related to load inside it
+# for same key diff env may have diffrent value. so first create environment in Environments to store secret
