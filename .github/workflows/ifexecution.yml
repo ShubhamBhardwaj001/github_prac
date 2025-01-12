@@ -1,1 +1,25 @@
+name: web deployment
+on: workflow_dispatch
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code   ## id is used for making refrence or makring a point its imp read about it more
+        id: run-testing
+        uses: actions/checkout@v3
+      - name: upload test report  # here we are adding if at step level.
+        if: failure() && steps.run-testing.outcome == 'failure'   ## this condition mean if the get code fails then still this function upload test report should run
+        uses: actions/chackout@v3
+## there are 4 functions in github which we can use in if condition.
+## failure() --> always return true when any previous jobs fails success() always() cancelled()
+  report:   # here we are adding if condition on job level 
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: output info
+        continue-on-error: true   # this means even if this step fail job should continue to execute.
+        run: "output"
 
+# now the diffrence btw if and continue-on-error here is the job or step will still execute in if condition eveb
+# if the previous job or step fail but when the whole job will get executed the workflow will show job/ workflow failed where 
+# when we use continue on error the whole job/workflow run successfully
