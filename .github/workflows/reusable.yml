@@ -1,0 +1,29 @@
+name: reusable workdlow
+on:
+  workflow_call:
+      inputs:
+        abcd:
+        required: false
+        default: dist
+        type: String
+      outputs:
+         result:
+         description: the workflow can also give output to the workflow which called the reusable workflow.
+         value: ${{jobs.deploy}}
+  # reusable workflow will run whe it is called by another workflow and we have defined inputs because  this workflow needs the input when other workflow call it.
+jobs:
+  deploy:
+      runs-on: ubuntu_latest
+      steps:
+        - name: ${{inputs.abcd}}  it will give the input value here
+          run: echo "Deploying and uploading"    
+        - name: set result output
+          run: echo "::set-output name=step.result:: success" 
+
+
+# now in another workflow how will you call this workflow. Treat this as diff workflow.
+
+
+deploy:
+    uses: ./.github/workflows/reusable.yml    # give the exact path of the reusable workflow.
+  
