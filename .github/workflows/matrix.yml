@@ -1,0 +1,22 @@
+name: Matrix demo
+on: workflow_dispatch
+jobs:
+  build:
+    continue-on-error: true
+    strategy:
+      matrix:
+        node-version: [12,13,14]  # so this is matrix the job will run on ubuntu-latest for version 12,13 and 14 and same for  windows latest
+        operating-system: [ubuntu-latest, windows-latest]  # so matrix allows us to quicky run the same job with diff config. 
+    runs-on: ${{matrix.operating-systems}}  # so this will tell the job to run multiply parallely on both the os.
+    steps:
+      -  name: Get code
+         uses: actions/checkout@v3
+      -  name: Install NodeJS
+         uses: actions/setup-node@v3
+         with:
+           node-version: ${{matrix.node-version}}
+      -  name: install dependencies
+         run: npm ci
+      -  name: build project
+         run: npm run build
+      
