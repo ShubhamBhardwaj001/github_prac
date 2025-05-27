@@ -55,3 +55,23 @@ jobs:
     steps:
       -  name: output content
          run: echo "{{needs.deploy.outputs.firstoutput}}"   # needs object will help to get the output defined in another job
+
+
+
+
+##############################################################333
+ - name: Get latest configuration revision
+      id: get-revision
+      run: |
+        revision=$(aws mq describe-configuration \
+          --configuration-id ${{ github.event.inputs.configuration_id }} \
+          --query 'LatestRevision.Revision' --output text)
+        echo "revision=$revision" >> $GITHUB_OUTPUT
+
+    - name: Attach new config revision to broker
+      run: |
+        aws mq update-broker \
+          --broker-id ${{ github.event.inputs.broker_id }} \
+          --configuration id=${{ github.event.inputs.configuration_id }},revision=${{ steps.get-revision.outputs.revision }}
+
+          ### both function are part of same job.
