@@ -7,3 +7,51 @@ jobs:
       - name: output github context
         run : echo "${{ toJSON(github)}}"
 # ${{}} ---> this makes that we are trying to get some data this is not a simple line to print
+
+
+
+
+# creating output in one job and using it in other job
+name: Events demo1
+on: 
+  pull_request:
+    types:
+     - opened
+  push:
+    branches:
+      - main    
+      - 'dev-*'
+  
+  deploy:
+    
+    runs-on: ubuntu-latest
+    outputs:   # here we are defining the output in this job.
+      firstoutput:${{steps.publish.outputs.firstoutput}}   # so now we have set output for the overall job
+    steps:
+      - name: get code 
+        run: actions/checkout@v3 
+      - name: create a output
+        id: publish
+        run: echo "firstoutput= 1234 >> $GITHUB_OUTPUT"
+      - name: print output
+        run: |
+             echo "Mongo_username: ${{env.Mongo username}}"  # both will give the same output
+             echo "Mongo_username: $Mongo username
+      - name: run server
+        run: npm start https://127.0.0.0:$port   # getting the env var value
+
+      env:
+        mongopass: ${{secrets.mongo_pass}}
+        mongouser: ${{secrets.mongo_user}}
+
+
+
+jobs:
+  needs: deploy # this jon needs or depended upon the deploy job
+  hello:
+    environment: load
+    env:
+      mongo user: ${{secrets.mongo_user}}  # now these values will be fetched from env secret of load
+    steps:
+      -  name: output content
+         run: echo "{{needs.deploy.outputs.firstoutput}}"   # needs object will help to get the output defined in another job
