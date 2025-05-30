@@ -1,0 +1,29 @@
+# Artifacts are oytput such as files, folders or a package. Its the ouput or assets produced bt the jobs. And we can download them manually and automatically and can be used by other jobs.
+# so these artifacts are gone when our workflow runs successfully so sometimes we need these artifacts so for that we store them somewher.
+test:
+  runs-on: ubuntu-latest
+  steps:
+    -  name:
+       uses:
+
+build:                    # this job will create a artifact.
+  runs-on: ubuntu-latest
+  steps:
+    -  name:
+       uses:
+
+    -  name: upload artifacts   # with the help of this action we will retrive the artifact.
+       uses: actions/upload-artifacts@v3                # github provides actuons to upload artifacts
+       with:
+         name: dist-files  #giving the name of the folder where this file or folder will be store or will be store ad this name.
+         path: dist # this mean artifat will be dtored in dist folder
+
+deploy:
+  need: build               # we want deploy job run after the build runs successfully because then only we can get the artifact in this job which was created by the build job.
+  runs-on: ubuntu-latest
+  steps:
+    -  name: get build artifacts
+       uses: actions/download-artifact@v3   # this will automatically download the artifact which was created by the build job and now it can be used in deploy job. and if you want to doenload manuaaly go to logs bottom you will find the folder to download.
+       with:
+         name: dist-files   # this ensures that we download the correct file beacuse there can be more then 1 artifacts.
+         
